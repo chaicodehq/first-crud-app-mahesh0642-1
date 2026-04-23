@@ -10,4 +10,25 @@
  */
 export function errorHandler(err, req, res, next) {
   // Your code here
+  if(err.name === "ValidationError"){
+    return res.status(400).json({
+    error: {
+      message: Object.values(err.errors)
+        .map(e => e.message)
+        .join(", "),
+  },
+})
+  }
+    
+  //Mongoose CastError
+  else if(err.name === "CastError"){
+    statusCode = 400;
+    message = "Invalid  id format";
+  }
+   
+  res.status(statusCode).json({
+    error:{
+      message,
+    }
+  })
 }
